@@ -1,0 +1,229 @@
+<!doctype html>
+
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>كتبي — متجر كتب السنة</title>
+  <style>
+    :root{
+      --green: #2f7a48; /* primary */
+      --green-light: #5aa774;
+      --brown: #6b4f35; /* accent */
+      --bg: #f7f5f0;
+      --card: #ffffff;
+      --radius: 12px;
+      --max: 1100px;
+      font-family: "Segoe UI", Tahoma, system-ui, -apple-system, "Noto Sans Arabic", "Tahoma";
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:#0b0b0b}
+    .container{max-width:var(--max);margin:28px auto;padding:20px}header{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:64px;height:64px;border-radius:12px;background:linear-gradient(135deg,var(--green),var(--green-light));display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:20px;box-shadow:0 6px 18px rgba(47,122,72,0.18)}
+.site-title{font-size:20px;font-weight:700;color:var(--brown)}
+.tag{font-size:13px;color:#444}
+
+nav{display:flex;gap:12px;align-items:center}
+.btn{padding:10px 14px;border-radius:10px;background:var(--brown);color:white;border:none;cursor:pointer}
+.btn-outline{background:transparent;border:2px solid var(--green);color:var(--green);padding:8px 12px;border-radius:10px}
+
+.hero{margin-top:18px;background:linear-gradient(90deg, rgba(47,122,72,0.06), rgba(107,79,53,0.03));padding:18px;border-radius:var(--radius);display:flex;gap:18px;align-items:center}
+.hero-left{flex:1}
+.hero h1{margin:0;font-size:22px;color:var(--green)}
+.hero p{margin:8px 0;color:#334}
+
+.search{display:flex;gap:8px;margin-top:12px}
+.search input{flex:1;padding:10px;border-radius:10px;border:1px solid #ddd}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-top:18px}
+.card{background:var(--card);border-radius:14px;padding:14px;box-shadow:0 6px 16px rgba(12,12,12,0.06);display:flex;flex-direction:column;gap:8px}
+.cover{height:220px;border-radius:10px;background:#eee;display:flex;align-items:center;justify-content:center;font-weight:700;color:#666}
+.title{font-weight:700}
+.author{font-size:13px;color:#666}
+.price{font-weight:700;color:var(--brown)}
+.actions{display:flex;gap:8px;margin-top:auto}
+
+footer{margin-top:28px;padding:18px;border-radius:12px;background:linear-gradient(90deg, rgba(47,122,72,0.03), rgba(107,79,53,0.02));display:flex;justify-content:space-between;align-items:center}
+
+/* cart */
+.cart-btn{position:fixed;left:18px;bottom:18px;background:var(--green);color:white;padding:12px;border-radius:50px;box-shadow:0 8px 22px rgba(47,122,72,0.24);z-index:50}
+.cart-panel{position:fixed;left:18px;bottom:78px;width:320px;max-height:70vh;overflow:auto;background:var(--card);border-radius:14px;padding:12px;box-shadow:0 12px 30px rgba(12,12,12,0.12);display:none;flex-direction:column;gap:8px;z-index:60}
+.cart-item{display:flex;gap:8px;align-items:center}
+.cart-item .meta{flex:1}
+.small{font-size:13px;color:#666}
+
+@media (max-width:700px){
+  header{flex-direction:column;align-items:flex-start}
+  .hero{flex-direction:column}
+  .cart-panel{left:50%;transform:translateX(50%)}
+}
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo">كتبي</div>
+        <div>
+          <div class="site-title">كتبي</div>
+          <div class="tag">متجر كتب السنة — كتب دراسية و مراجع</div>
+        </div>
+      </div>
+      <nav>
+        <button class="btn-outline" onclick="scrollToSection('catalog')">المكتبة</button>
+        <button class="btn-outline" onclick="scrollToSection('about')">عنا</button>
+        <button class="btn" id="openCartBtn">🛒 0</button>
+      </nav>
+    </header><section class="hero">
+  <div class="hero-left">
+    <h1>مرحبا بكم فـ <span style="color:var(--brown)">كتبي</span> — كتب السنة بسهولة وبثمن مناسب</h1>
+    <p>لقاو الكتب الدراسية، مراجع الباك، وكتب الدعم الدراسي بطريقة بسيطة. قدر تختار، تزيد للسلة، وتخلص — بكل أمان.</p>
+    <div class="search">
+      <input type="search" id="searchInput" placeholder="قلّب على كتاب... (مثال: الرياضيات)">
+      <button class="btn-outline" onclick="doSearch()">قلب</button>
+    </div>
+  </div>
+  <div style="width:260px;display:flex;align-items:center;justify-content:center">
+    <div style="width:180px;height:220px;border-radius:12px;background:linear-gradient(180deg,var(--green),var(--green-light));display:flex;align-items:center;justify-content:center;color:white;font-weight:700">📚</div>
+  </div>
+</section>
+
+<main id="catalog">
+  <h2 style="margin-top:22px;color:var(--brown)">المكتبة</h2>
+  <div class="grid" id="productsGrid">
+    <!-- products injected by JS -->
+  </div>
+</main>
+
+<footer id="about">
+  <div>
+    <div style="font-weight:700;color:var(--green)">كتبي</div>
+    <div class="small">متجر إلكتروني لبيع كتب السنة ومراجع الدعم</div>
+  </div>
+  <div class="small">التواصل: <strong>ktibi@example.com</strong></div>
+</footer>
+
+  </div><button class="cart-btn" id="cartToggle">🛒 السلة</button>
+
+  <div class="cart-panel" id="cartPanel">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div style="font-weight:700">السلة ديالي</div>
+      <button class="btn-outline" onclick="clearCart()">نقي</button>
+    </div>
+    <div id="cartItems"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;padding-top:8px;border-top:1px dashed #eee">
+      <div style="font-weight:700">المجموع:</div>
+      <div id="cartTotal">0 د.م</div>
+    </div>
+    <div style="margin-top:10px;display:flex;gap:8px">
+      <button class="btn" onclick="checkout()">مصلحة الخلاص</button>
+      <button class="btn-outline" onclick="toggleCart()">سد</button>
+    </div>
+  </div>  <script>
+    // sample products (you can edit these)
+    const products = [
+      {id:1,title:'رياضيات السنة الثالثة ثانوي',author:'س. محمد',price:65},
+      {id:2,title:'فيزياء: مفاهيم ومشاكل',author:'د. فاطنة',price:70},
+      {id:3,title:'اللغة العربية: قواعد وامثلة',author:'أ. سعيد',price:50},
+      {id:4,title:'الانجليزية: كتاب السنة',author:'م. نوال',price:55},
+      {id:5,title:'تاريخ وجغرافيا — ملخصات',author:'م. هشام',price:40}
+    ];
+
+    const cart = {};
+
+    function formatPrice(n){return n + ' د.م'}
+
+    function renderProducts(list){
+      const grid = document.getElementById('productsGrid');
+      grid.innerHTML='';
+      list.forEach(p=>{
+        const card = document.createElement('div'); card.className='card';
+        card.innerHTML = `
+          <div class="cover">غلاف الكتاب</div>
+          <div class="title">${p.title}</div>
+          <div class="author">بواسطة ${p.author}</div>
+          <div class="price">${formatPrice(p.price)}</div>
+          <div class="actions">
+            <button class="btn-outline" onclick="addToCart(${p.id})">زيد للسلة</button>
+            <button class="btn" onclick="buyNow(${p.id})">شري دابا</button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function addToCart(id){
+      const p = products.find(x=>x.id===id);
+      if(!p) return;
+      cart[id] = cart[id] ? {...cart[id], qty: cart[id].qty + 1} : {...p, qty:1};
+      updateCartUI();
+    }
+
+    function buyNow(id){ addToCart(id); checkout(); }
+
+    function updateCartUI(){
+      const btn = document.getElementById('openCartBtn');
+      const qty = Object.values(cart).reduce((s,i)=>s+i.qty,0);
+      btn.textContent = `🛒 ${qty}`;
+
+      document.getElementById('cartToggle').textContent = `🛒 ${qty}`;
+
+      const items = document.getElementById('cartItems'); items.innerHTML='';
+      let total=0;
+      Object.values(cart).forEach(it=>{
+        total += it.price * it.qty;
+        const row = document.createElement('div'); row.className='cart-item';
+        row.innerHTML = `
+          <div style="width:56px;height:64px;border-radius:8px;background:#f0f0f0;display:flex;align-items:center;justify-content:center">غلاف</div>
+          <div class="meta">
+            <div style="font-weight:700">${it.title}</div>
+            <div class="small">${it.qty} × ${formatPrice(it.price)}</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <button class="btn-outline" onclick="dec(${it.id})">-</button>
+            <button class="btn" onclick="inc(${it.id})">+</button>
+          </div>
+        `;
+        items.appendChild(row);
+      });
+      document.getElementById('cartTotal').textContent = formatPrice(total);
+    }
+
+    function inc(id){ cart[id].qty++; updateCartUI(); }
+    function dec(id){ cart[id].qty--; if(cart[id].qty<=0) delete cart[id]; updateCartUI(); }
+    function clearCart(){ for(let k in cart) delete cart[k]; updateCartUI(); }
+
+    function toggleCart(){
+      const panel = document.getElementById('cartPanel');
+      panel.style.display = panel.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    document.getElementById('cartToggle').addEventListener('click', toggleCart);
+    document.getElementById('openCartBtn').addEventListener('click', toggleCart);
+
+    function checkout(){
+      const items = Object.values(cart);
+      if(items.length===0){ alert('السلة خاوية. زيدي شي كتاب أولاً 🙏'); return; }
+      // simple checkout simulation
+      let summary = 'طلباتك:\n';
+      let total=0; items.forEach(i=>{ summary += `${i.title} — ${i.qty} × ${i.price} د.م\n`; total += i.qty * i.price; });
+      summary += `\nالمجموع: ${total} د.م\n\nغادي نوجدو لك طريقة الخلاص والتوصيل (هنا مجرد نموذج)`;
+      alert(summary);
+    }
+
+    function doSearch(){
+      const q = document.getElementById('searchInput').value.trim();
+      if(!q){ renderProducts(products); return; }
+      const res = products.filter(p=> p.title.includes(q) || p.author.includes(q));
+      renderProducts(res);
+    }
+
+    function scrollToSection(id){ document.getElementById(id).scrollIntoView({behavior:'smooth'}); }
+
+    // initial render
+    renderProducts(products);
+    updateCartUI();
+  </script></body>
+</html>
